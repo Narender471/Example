@@ -18,7 +18,7 @@ public class CableStoreImpl implements CableStoreDao {
 	@Override
 	public boolean insertDrumToStore(CableStore cs) {
 		
-		boolean flag = true;
+		boolean flag = false;
 		
 		try {
 			
@@ -43,6 +43,65 @@ public class CableStoreImpl implements CableStoreDao {
 		}
 		
 		return flag;
+	}
+
+	@Override
+	public String updateDateByDb(double dbNo, String date) {
+		// TODO Auto-generated method stub
+		
+		int i = 0;
+		
+		try {
+			
+			connection = JDBCUtil.getJdbcConnection();	
+			String sqlInsertQuery = "update drumatstore set dbDate = ? where dbNo = ?";
+			pstmt = connection.prepareStatement(sqlInsertQuery);
+			pstmt.setString(1, date);
+			pstmt.setDouble(2, dbNo);
+			i = pstmt.executeUpdate();
+			
+		}catch(SQLException se) {
+			se.printStackTrace();
+		}	
+		try {
+			JDBCUtil.cleanUp(connection, pstmt, resultSet);
+		}catch(SQLException se) {
+			se.printStackTrace();
+		}
+		
+		return "No of records updated are " + i;
+	}
+
+	@Override
+	public String updateUniqueCode() {
+		// TODO Auto-generated method stub
+int i = 0;
+		
+		try {
+			
+			connection = JDBCUtil.getJdbcConnection();
+			String sqlSelectQuery = "select * from drumatstore";
+			pstmt = connection.prepareStatement(sqlSelectQuery);
+			resultSet = pstmt.executeQuery();
+			while(resultSet.next()) {
+				String sqlInsertQuery = "update drumatstore set uniqueCode = ? where sno = ?";
+				pstmt = connection.prepareStatement(sqlInsertQuery);
+				pstmt.setString(1,resultSet.getDouble("dbNO") + " " + resultSet.getString("drumNo"));
+				pstmt.setDouble(2, resultSet.getInt("sno"));
+				i = pstmt.executeUpdate();
+			}
+			
+			
+		}catch(SQLException se) {
+			se.printStackTrace();
+		}	
+		try {
+			JDBCUtil.cleanUp(connection, pstmt, resultSet);
+		}catch(SQLException se) {
+			se.printStackTrace();
+		}
+		
+		return "No of records updated are " + i;
 	}
 
 }

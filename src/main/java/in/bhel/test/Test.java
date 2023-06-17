@@ -11,14 +11,8 @@ public class Test {
 		
 		System.out.println("hello");
 		CableStore cs = new CableStore();
-		cs.setCableCode("121");
-		cs.setDbDate("asdf");
-		cs.setDbNo(12);
-		cs.setDrumNo("asdf");
-		cs.setLength(1212);
-		cs.setUniqueCode("asdf");
 		CableStoreDao csd = new CableStoreImpl();
-		csd.insertDrumToStore(cs);
+		System.out.println(csd.updateDateByDb(458,"2023-01-05"));
 
 	}
 
